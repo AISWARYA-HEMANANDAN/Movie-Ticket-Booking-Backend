@@ -1,13 +1,27 @@
 const Movie = require("../model/movieModel")
 const mongoose = require("mongoose")
+const uploadToCloudinary = require("../utilities/imageUpload")
 
 // Create movie
 const createMovie = async (req, res) => {
     try {
-        const { title, description, posterImg, rating, genre, duration } = req.body
-        const newMovie = new Movie({ title, description, posterImg, rating, genre, duration })
-        const savedMovie = await newMovie.save()
-        return res.status(201).json({ message: "Movie created successfully", savedMovie })
+        const { title, description, rating, genre, duration } = req.body
+
+        if (!title || !description || !rating || !genre || !duration) {
+            return res.status(400).json({ error: "All fields are required" })
+        }
+        if (!req.file) {
+            return res.status(400).json({ error: "Image not found" })
+        }
+
+        const cloudinaryRes = await uploadToCloudinary(req.file.path)
+
+        const newMovie = new Movie({ title, description, rating, genre, duration, posterImg: cloudinaryRes })
+        let savedMovie = await newMovie.save()
+
+        if (savedMovie) {
+            return res.status(201).json({ message: "Movie created successfully", savedMovie })
+        }
     } catch (error) {
         console.log(error);
         res.status(error.code || 500).json({ error: error.message || "Internal server error" })
@@ -52,6 +66,9 @@ const getMovie = async (req, res) => {
     try {
         const { movieId } = req.params
         const film = await Movie.findById(movieId)
+        if (!film) {
+            return res.status(400).json({ error: "Movie not found" })
+        }
         return res.status(200).json({ message: "Movie fetched successfully", film })
     } catch (error) {
         console.log(error);
@@ -63,7 +80,20 @@ const getMovie = async (req, res) => {
 const updateMovie = async (req, res) => {
     try {
         const { movieId } = req.params
-        const updatedMovie = await Movie.findByIdAndUpdate(movieId, req.body, { new: true })
+        const { title, description, rating, genre, duration } = req.body
+        let imageUrl
+
+        let isMovieExist = await Movie.findById(movieId)
+
+        if (!isMovieExist) {
+            return res.status(400).json({ error: "Movie Not found" })
+        }
+        if (req.file) {
+            const cloudinaryRes = await uploadToCloudinary(req.file.path)
+            imageUrl = cloudinaryRes
+        }
+
+        const updatedMovie = await Movie.findByIdAndUpdate(movieId, { title, description, rating, genre, duration, posterImg: imageUrl }, { new: true })
         return res.status(200).json({ message: "Movie updated successfully", updatedMovie })
     } catch (error) {
         console.log(error);

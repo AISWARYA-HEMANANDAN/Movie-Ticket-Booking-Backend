@@ -2,17 +2,20 @@ const mongoose = require('mongoose')
 const movieSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     description: {
         type: String,
         required: true
     },
     posterImg: {
-        type: String
+        type: String,
+        required: true
     },
     rating: {
-        type: String
+        type: String,
+        required: true
     },
     genre: {
         type: [String], // You can store multiple genres as an array of strings
