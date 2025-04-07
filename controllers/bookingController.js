@@ -18,7 +18,7 @@ const createBooking = async (req, res) => {
             console.log(schedule);
             let showDate1 = new Date(schedule.showDate);
             let showDate2 = new Date(showDate);
-            if (showDate1.getDay() === showDate2.getDay() &&
+            if (showDate1.getDate() === showDate2.getDate() &&
                 showDate1.getMonth() === showDate2.getMonth() &&
                 showDate1.getFullYear() === showDate2.getFullYear() &&
                 schedule.showTime === showTime &&

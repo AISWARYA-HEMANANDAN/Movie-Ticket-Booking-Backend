@@ -20,7 +20,7 @@ const bookingSchema = new mongoose.Schema({
     },
     seats: [
         {
-            // { row: 'D', col: 0, seatId: '10', price: 300 }
+            // { row: 'D', col: 0, screenId: '10', price: 300 }
             row: {
                 type: String,
                 required: true
@@ -29,8 +29,9 @@ const bookingSchema = new mongoose.Schema({
                 type: Number,
                 required: true
             },
-            seatId: {
-                type: String,
+            screenId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Screen', // Reference to the Screen model
                 required: true
             },
             price: {
@@ -56,7 +57,11 @@ const bookingSchema = new mongoose.Schema({
         ref: 'User', // Reference to the User model
         required: true
     }
-}, { timeStamps: true })
+}, { timestamps: true })
+
+bookingSchema.methods.calculateTotalPrice = function () {
+    this.totalPrice = this.seats.reduce((total, seat) => total + seat.price, 0)
+}
 
 const Booking = new mongoose.model("Booking", bookingSchema)
 module.exports = Booking

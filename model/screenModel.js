@@ -29,17 +29,17 @@ const screenSchema = new mongoose.Schema({
             },
             showTime: String,
             notAvailableSeats: [{
-                // { row: 'D', col: 0, seatId: '10', price: 300 }
+                // { row: 'D', col: 0, screenId: '10', price: 300 }
                 row: String,
                 col: Number,
-                seatId: String,
+                screenId: String,
                 price: Number
 
             }],
             showDate: Date
         }
     ]
-}, { timeStamps: true })
+}, { timestamps: true })
 
 const Screen = new mongoose.model("Screen", screenSchema)
 module.exports = Screen

@@ -25,23 +25,8 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    cast: [
-        {
-            celebType : String,
-            celebName : String,
-            celebRole : String,
-            celebImage : String
-        }
-    ],
-    crew: [
-        {
-            celebType : String,
-            celebName : String,
-            celebRole : String,
-            celebImage : String
-        }
-    ]    
-}, { timeStamps: true })
+
+}, { timestamps: true })
 
 const Movie = new mongoose.model("Movie", movieSchema)
 module.exports = Movie

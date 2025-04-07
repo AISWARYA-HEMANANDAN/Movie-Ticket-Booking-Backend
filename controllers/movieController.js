@@ -28,28 +28,6 @@ const createMovie = async (req, res) => {
     }
 }
 
-const addCelebToMovie = async (req, res) => {
-    try {
-        const { movieId, celebType, celebName, celebRole, celebImage } = req.body
-        const movie = await Movie.findById(movieId)
-        if (!movie) {
-            return res.status(404).json({ error: "Movie not found" })
-        }
-        const newCeleb = { celebType, celebName, celebRole, celebImage }
-
-        if (celebType === "cast") {
-            movie.cast.push(newCeleb)
-        } else {
-            movie.crew.push(newCeleb)
-        }
-        await movie.save()
-        return res.status(201).json({ message: "Celeb added successfully" })
-    } catch (error) {
-        console.log(error);
-        res.status(error.code || 500).json({ error: error.message || "Internal server error" })
-    }
-}
-
 // Fetch all movies
 const getAllMovies = async (req, res) => {
     try {
@@ -116,4 +94,4 @@ const deleteMovie = async (req, res) => {
     }
 }
 
-module.exports = { createMovie, addCelebToMovie, getAllMovies, getMovie, updateMovie, deleteMovie }
+module.exports = { createMovie, getAllMovies, getMovie, updateMovie, deleteMovie }
