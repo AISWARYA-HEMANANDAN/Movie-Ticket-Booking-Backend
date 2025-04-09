@@ -44,6 +44,8 @@ const createBooking = async (req, res) => {
         await screen.save();
         console.log('screen saved');
 
+        newBooking.calculateTotalPrice()
+
         user.bookings.push(newBooking._id);
         const savedBooking = await user.save();
         console.log('user saved');
@@ -70,6 +72,7 @@ const updateBooking = async (req, res) => {
     try {
         const { bookingId } = req.params
         const updatedBooking = await Booking.findByIdAndUpdate(bookingId, req.body, { new: true })
+        updatedBooking.calculateTotalPrice()
         return res.status(200).json({ message: "Booking updated successfully", updatedBooking })
     } catch (error) {
         console.log(error);
@@ -84,7 +87,8 @@ const deleteBooking = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(bookingId)) {
             return res.status(400).json({ error: "Invalid booking id" })
         }
-        await Booking.findByIdAndDelete(bookingId)
+        const deletedBooking = await Booking.findByIdAndDelete(bookingId)
+        deletedBooking.calculateTotalPrice()
         return res.status(200).json({ message: "Booking deleted successfully" })
     } catch (error) {
         console.log(error);

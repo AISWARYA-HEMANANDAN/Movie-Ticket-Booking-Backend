@@ -6,8 +6,8 @@ const mongoose = require("mongoose")
 // Register a new user 
 const register = async (req, res) => {
     try {
-        const { name, email, password, confirmPassword, city } = req.body
-        if (!name || !email || !password || !confirmPassword || !city) {
+        const { name, email, password, confirmPassword } = req.body
+        if (!name || !email || !password || !confirmPassword ) {
             return res.status(400).json({ message: 'All fields are required' })
         }
 

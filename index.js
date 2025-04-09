@@ -6,6 +6,7 @@ const userRoutes = require('./routes/userRoutes')
 const bookingRoutes = require('./routes/bookingRoutes')
 const movieRoutes = require('./routes/movieRoutes')
 const screenRoutes = require('./routes/screenRoutes')
+const adminRoutes = require('./routes/adminRoutes')
 require('dotenv').config()
 
 const app = express()
@@ -31,6 +32,7 @@ app.use("/user", userRoutes)
 app.use("/booking", bookingRoutes)
 app.use("/movie", movieRoutes)
 app.use("/screen", screenRoutes)
+app.use("/admin", adminRoutes )
 
 app.listen(process.env.PORT, (err) => {
     if (err) {
