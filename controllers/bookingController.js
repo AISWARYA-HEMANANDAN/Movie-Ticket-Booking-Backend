@@ -6,26 +6,22 @@ const mongoose = require("mongoose")
 // Create booking
 const createBooking = async (req, res) => {
     try {
-        const { showTime, showDate, movieId, screenId, seats, totalPrice, paymentId, paymentType } = req.body
+        const { showTime, showDate, movieId, screenId, seats, totalPrice } = req.body
         console.log(req.body);
 
-        // You can create a function to verify payment id
         const screen = await Screen.findById(screenId);
         if (!screen) {
             return res.status(404).json({ message: "Theatre not found" });
         }
         const movieSchedule = screen.movieSchedules.find(schedule => {
-            console.log(schedule);
-            let showDate1 = new Date(schedule.showDate);
-            let showDate2 = new Date(showDate);
-            if (showDate1.getDate() === showDate2.getDate() &&
-                showDate1.getMonth() === showDate2.getMonth() &&
-                showDate1.getFullYear() === showDate2.getFullYear() &&
+            const scheduleDate = new Date(schedule.showDate).toDateString();
+            const targetDate = new Date(showDate).toDateString();
+        
+            return (
+                scheduleDate === targetDate &&
                 schedule.showTime === showTime &&
-                schedule.movieId == movieId) {
-                return true;
-            }
-            return false;
+                String(schedule.movieId) === String(movieId)
+            );
         });
 
         if (!movieSchedule) {
@@ -36,7 +32,7 @@ const createBooking = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         console.log('before newBooking done');
-        const newBooking = new Booking({ userId: req.userId, showTime, showDate, movieId, screenId, seats, totalPrice, paymentId, paymentType })
+        const newBooking = new Booking({ userId: req.userId, showTime, showDate, movieId, screenId, seats, totalPrice })
         await newBooking.save();
         console.log('newBooking done');
 

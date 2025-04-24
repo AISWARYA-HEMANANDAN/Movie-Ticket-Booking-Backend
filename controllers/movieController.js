@@ -42,12 +42,13 @@ const getAllMovies = async (req, res) => {
 // Fetch a movie
 const getMovie = async (req, res) => {
     try {
-        const { movieId } = req.params
-        const film = await Movie.findById(movieId)
-        if (!film) {
+    const { id } = req.params
+    console.log("Getting movie with ID:", id);
+        const movie = await Movie.findById(id)
+        if (!movie) {
             return res.status(400).json({ error: "Movie not found" })
         }
-        return res.status(200).json({ message: "Movie fetched successfully", film })
+        return res.status(200).json({ message: "Movie fetched successfully", movie })
     } catch (error) {
         console.log(error);
         res.status(error.code || 500).json({ error: error.message || "Internal server error" })
