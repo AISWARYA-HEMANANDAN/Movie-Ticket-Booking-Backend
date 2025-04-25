@@ -25,7 +25,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(cors({
-    origin: "https://movie-ticket-booking-backend-chi.vercel.app/"
+    origin: "https://movie-ticket-booking-frontend-pink.vercel.app/",
 }))
 
 //routes
