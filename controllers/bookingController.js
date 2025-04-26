@@ -13,14 +13,27 @@ const createBooking = async (req, res) => {
         if (!screen) {
             return res.status(404).json({ message: "Theatre not found" });
         }
+        console.log("Received showDate:", showDate);
+        console.log("Formatted showDate:", new Date(showDate).toDateString());
+
+        console.log("Available schedules:");
+        screen.movieSchedules.forEach((s, i) => {
+            console.log(`[${i}]`, {
+                movieId: s.movieId.toString(),
+                showDate: new Date(s.showDate).toDateString(),
+                showTime: s.showTime
+            });
+        });
+
         const movieSchedule = screen.movieSchedules.find(schedule => {
             const scheduleDate = new Date(schedule.showDate).toDateString();
             const targetDate = new Date(showDate).toDateString();
-        
+
             return (
                 scheduleDate === targetDate &&
-                schedule.showTime === showTime &&
-                String(schedule.movieId) === String(movieId)
+                schedule.showTime.trim() === showTime.trim() &&
+                schedule.movieId.equals(movieId)
+
             );
         });
 
