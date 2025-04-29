@@ -12,23 +12,23 @@ require('dotenv').config()
 
 const app = express()
 
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({
+    origin: "https://movie-ticket-booking-frontend-pink.vercel.app", // ✅ Make sure this matches your frontend
+    credentials: true // Allow cookies
+}));
+
+// Connect to MongoDB
+dbConnection();
+
+// Default route
 app.get("/", (req, res) => {
-    res.status(200).json("Server started")
+    res.status(200).json("🎬 Movie Booking App Server is running!")
 })
 
-//connect Db
-dbConnection()
-
-//middleware
-app.use(express.json())
-
-app.use(cookieParser())
-
-app.use(cors({
-    origin: "https://movie-ticket-booking-frontend-pink.vercel.app"
-}))
-
-//routes
+// API routes
 app.use("/user", userRoutes)
 app.use("/booking", bookingRoutes)
 app.use("/movie", movieRoutes)
