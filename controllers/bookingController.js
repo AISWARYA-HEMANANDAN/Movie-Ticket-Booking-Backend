@@ -95,6 +95,7 @@ const getBookings = async (req, res) => {
 
         console.log(bookings)
         return res.status(200).json({ message: "Bookings fetched successfully", bookings });
+        
     } catch (error) {
         console.log(error);
         res.status(error.code || 500).json({ error: error.message || "Internal server error" });
