@@ -18,7 +18,7 @@ const movieSchema = new mongoose.Schema({
         required: true
     },
     genre: {
-        type: [String], // You can store multiple genres as an array of strings
+        type: [String],
         required: true
     },
     duration: {

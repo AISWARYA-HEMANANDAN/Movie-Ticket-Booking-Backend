@@ -42,8 +42,8 @@ const getAllMovies = async (req, res) => {
 // Fetch a movie
 const getMovie = async (req, res) => {
     try {
-    const { id } = req.params
-    console.log("Getting movie with ID:", id);
+        const { id } = req.params
+        console.log("Getting movie with ID:", id);
         const movie = await Movie.findById(id)
         if (!movie) {
             return res.status(400).json({ error: "Movie not found" })

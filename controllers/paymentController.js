@@ -2,7 +2,6 @@ const Stripe = require('stripe')
 
 const stripe = new Stripe(process.env.STRIPE_SECRET)
 
-
 const paymentFunction = async (req, res) => {
     try {
         const { movies } = req.body
@@ -33,7 +32,6 @@ const paymentFunction = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(error.status || 500).json({ error: error.message || "Internal server error" })
-
     }
 }
 

@@ -30,14 +30,14 @@ const createBooking = async (req, res) => {
         const movieSchedule = screen.movieSchedules.find(schedule => {
             const scheduleDate = new Date(schedule.showDate).toDateString();
             const targetDate = new Date(showDate).toDateString();
-        
+
             return (
                 scheduleDate === targetDate &&
                 schedule.showTime.trim().toLowerCase() === showTime.trim().toLowerCase() &&
                 schedule.movieId.toString() === movieId.toString()
             );
         });
-        
+
 
         if (!movieSchedule) {
             return res.status(404).json({ message: "Movie schedule not found" });
@@ -90,8 +90,10 @@ const createBooking = async (req, res) => {
 const getBookings = async (req, res) => {
     try {
         const bookings = await Booking.find()
-            .populate('userId', 'name email')  // Only select name and email of user
-            .populate('movieId', 'title');     // Only select title of movie
+            .populate('userId', 'name email')
+            .populate('movieId', 'title');
+
+        console.log(bookings)
         return res.status(200).json({ message: "Bookings fetched successfully", bookings });
     } catch (error) {
         console.log(error);
@@ -107,16 +109,12 @@ const updateBooking = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(bookingId)) {
             return res.status(400).json({ error: "Invalid booking id" });
         }
-
         const updatedBooking = await Booking.findByIdAndUpdate(bookingId, req.body, { new: true });
-
         if (!updatedBooking) {
             return res.status(404).json({ message: "Booking not found" });
         }
-
         updatedBooking.calculateTotalPrice();
-        await updatedBooking.save(); // Save after recalculating
-
+        await updatedBooking.save();
         return res.status(200).json({ message: "Booking updated successfully", updatedBooking });
     } catch (error) {
         console.log(error);
@@ -132,13 +130,10 @@ const deleteBooking = async (req, res) => {
         if (!mongoose.Types.ObjectId.isValid(bookingId)) {
             return res.status(400).json({ error: "Invalid booking id" });
         }
-
         const deletedBooking = await Booking.findByIdAndDelete(bookingId);
-
         if (!deletedBooking) {
             return res.status(404).json({ message: "Booking not found" });
         }
-
         return res.status(200).json({ message: "Booking deleted successfully" });
     } catch (error) {
         console.log(error);

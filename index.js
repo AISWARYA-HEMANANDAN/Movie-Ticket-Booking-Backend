@@ -14,7 +14,7 @@ const app = express()
 
 app.get("/", (req, res) => {
     res.status(200).json("Server started")
-    })
+})
 
 //connect Db
 dbConnection()
@@ -34,7 +34,7 @@ app.use("/booking", bookingRoutes)
 app.use("/movie", movieRoutes)
 app.use("/screen", screenRoutes)
 app.use("/payment", paymentRoutes)
-app.use("/admin", adminRoutes )
+app.use("/admin", adminRoutes)
 
 app.listen(process.env.PORT, (err) => {
     if (err) {

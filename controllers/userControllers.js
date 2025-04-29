@@ -8,7 +8,7 @@ const register = async (req, res) => {
     try {
         const { name, email, password, confirmpassword } = req.body
         console.log("Received data:", req.body);
-  
+
         if (!name || !email || !password || !confirmpassword) {
             return res.status(400).json({ error: 'All fields are required' })
         }
@@ -20,7 +20,7 @@ const register = async (req, res) => {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
 
-        const newUser = new User({ name, email, password: hashedPassword }) 
+        const newUser = new User({ name, email, password: hashedPassword })
         const saved = await newUser.save()
 
         return res.status(201).json({ message: 'User created successfully', saved })

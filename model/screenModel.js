@@ -34,7 +34,6 @@ const screenSchema = new mongoose.Schema({
                 col: Number,
                 screenId: String,
                 price: Number
-
             }],
             showDate: Date
         }
