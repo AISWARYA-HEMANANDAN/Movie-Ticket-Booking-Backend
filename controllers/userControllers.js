@@ -102,4 +102,15 @@ const deleteUser = async (req, res) => {
     }
 }
 
-module.exports = { register, login, fetchUser, updateUser, deleteUser }
+// Fetch all users
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({}, 'name email isActive createdAt');
+        return res.status(200).json({ message: 'Users fetched successfully', users })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: error.message || "Internal server error" })
+    }
+}
+
+module.exports = { register, login, fetchUser, updateUser, deleteUser, getAllUsers }

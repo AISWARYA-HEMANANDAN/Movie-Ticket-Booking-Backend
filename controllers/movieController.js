@@ -31,7 +31,7 @@ const createMovie = async (req, res) => {
 // Fetch all movies
 const getAllMovies = async (req, res) => {
     try {
-        const movies = await Movie.find()
+        const movies = await Movie.find().sort({ createdAt: -1 })
         return res.status(200).json({ message: "Movies fetched successfully", movies })
     } catch (error) {
         console.log(error);
